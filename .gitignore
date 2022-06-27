@@ -1,3 +1,8 @@
+csx
+.vs
+edge
+Publish
+
 # Logs
 logs
 *.log
