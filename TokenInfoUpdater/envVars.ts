@@ -1,0 +1,9 @@
+export const TOKEN_INFO_OBJECT_ID = process.env["TOKEN_INFO_OBJECT_ID"] || "62b0678e9cca636585585d4f";
+export const TOKEN_INFO_COLLECTION_NAME = process.env["TOKEN_INFO_COLLECTION_NAME"] || "test1";
+export const TOKEN_SYMBOL = process.env["TOKEN_SYMBOL"] || "SCRT";
+export const INFLATION_SCHEDULE_OBJECT_ID = process.env["INFLATION_SCHEDULE_OBJECT_ID"] || "62bab0eadba06b173f5f448e";
+export const INFLATINO_SCHEDULE_COLLECTION_NAME = process.env["INFLATINO_SCHEDULE_COLLECTION_NAME"] || "inflation-schedule";
+export const SECONDS_PER_BLOCK = process.env["SECONDS_PER_BLOCK"] || "5.7695";
+export const STAKING_ADDRESS = process.env["STAKING_ADDRESS"] || "secret1xrat5zltdux0fd3ka5n3lm7w84wa6xcvp8gcxh";
+export const NUM_OF_COMPOUNDING_PERIODS = process.env["NUM_OF_COMPOUNDING_PERIODS"] || "52";
+export const PLATFORM_ADDRESS = process.env["PLATFORM_ADDRESS"] || "secret1nyqmrcwztjvfwr6chts46sv3eq9tpmvrfkv3qu";

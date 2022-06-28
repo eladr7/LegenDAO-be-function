@@ -27,16 +27,19 @@ Runs once every two months.
 
 * MONGODB_URL (all)
 * MONGODB_NAME (all)
-* INFLATINO_SCHEDULE_COLLECTION_NAME (InflationScheduleFetch)
-* INFLATION_SCHEDULE_OBJECT_ID (InflationScheduleFetch)
+* INFLATINO_SCHEDULE_COLLECTION_NAME (all)
+* INFLATION_SCHEDULE_OBJECT_ID (all)
+  
 * TOKEN_INFO_COLLECTION_NAME (TokenInfoUpdater)
 * TOKEN_INFO_OBJECT_ID (TokenInfoUpdater)
-* TOKEN_SYMBOL (TokenInfoUpdater)
+  
 * ACCOUNT_MNEMONIC (all)
 * NODE_ENDPOINT (all)
 * NODE_ENDPOINT_PORT (all)
 * CHAIN_ID (all)
 * STAKING_ADDRESS (all)
+  
+* TOKEN_SYMBOL (TokenInfoUpdater)
 * PLATFORM_ADDRESS (TokenInfoUpdater)
 * SECONDS_PER_BLOCK (TokenInfoUpdater)
 * NUM_OF_COMPOUNDING_PERIODS (TokenInfoUpdater)

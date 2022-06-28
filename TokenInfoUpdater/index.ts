@@ -3,7 +3,8 @@ import { ObjectId } from "mongodb";
 
 import {getUpdatedTokenInfoValues, ITokenInfo} from "./tokenInfoFetch";
 import {dbInstance, getDbInstance} from "../shared/db";
-import { getClient, secretNetworkClient } from "../shared/secretjsClient";
+import { getClient, secretNetworkClient } from "../shared/chainUtils";
+import { TOKEN_INFO_COLLECTION_NAME, TOKEN_INFO_OBJECT_ID } from "./envVars";
 
 
 const timerTrigger: AzureFunction = async function (context: Context, myTimer: any): Promise<void> {
@@ -23,21 +24,21 @@ const timerTrigger: AzureFunction = async function (context: Context, myTimer: a
       await getClient();
     }
 
-    const updatedValuesObj: ITokenInfo = await getUpdatedTokenInfoValues(context);
+    const updatedValuesObj: ITokenInfo = await getUpdatedTokenInfoValues(secretNetworkClient, context);
     if (Object.keys(updatedValuesObj).length === 0) {
-      // Fetching the data failed; MongoDB should not get updated
+      context.log("Fetching the data failed; MongoDB should not get updated");
       return;
     }
 
-    // Get the query object
+    // Get the object ID to update
     const tokenInfoObjectId = new ObjectId(
-      process.env["TOKEN_INFO_OBJECT_ID"]
+      TOKEN_INFO_OBJECT_ID
     );
     const queryBy = { _id: tokenInfoObjectId };
 
     const newvalues = { $set: updatedValuesObj };
     dbInstance
-      .collection(process.env["TOKEN_INFO_COLLECTION_NAME"])
+      .collection(TOKEN_INFO_COLLECTION_NAME)
       .updateOne(queryBy, newvalues, function (err, res) {
         if (err) throw err;
         context.log(

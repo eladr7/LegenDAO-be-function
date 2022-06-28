@@ -6,7 +6,7 @@
       "type": "timerTrigger",
       "direction": "in",
       "name": "TokenInfoUpdater",
-      "schedule": "0 */10 * * * *"
+      "schedule": "* */20 * * * *"
     }
   ]
 }
