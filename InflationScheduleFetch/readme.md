@@ -6,28 +6,24 @@ The `TimerTrigger` makes it incredibly easy to have your functions executed on a
 
 For a `TimerTrigger` to work, you provide a schedule in the form of a [cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression)(See the link for full details). A cron expression is a string with 6 separate expressions which represent a given schedule via patterns. The pattern we use to represent every 5 minutes is `0 */5 * * * *`. This, in plain text, means: "When seconds is equal to 0, minutes is divisible by 5, for any hour, day of the month, month, day of the week, or year".
 
-### TokenInfoUpdater
+### InflationScheduleFetch
 
-Updates these token's params into MongoDB:
-    apr
-    apy
-    liquidity
-    priceUsd
-    totalLocked
-    dailyVolume
+Fetches the inflation schedule from the LGND staking contract.
+Runs once every two months.
 
 ## Env vars required
 
-* MONGODB_URL -
-* MONGODB_NAME -
-* TOKEN_INFO_COLLECTION_NAME -
-* TOKEN_INFO_OBJECT_ID -
-* TOKEN_SYMBOL -
-* ACCOUNT_MNEMONIC -
-* NODE_ENDPOINT -
-* NODE_ENDPOINT_PORT -
-* CHAIN_ID -
-* STAKING_ADDRESS -
-* PLATFORM_ADDRESS -
-* SECONDS_PER_BLOCK -
-* NUM_OF_COMPOUNDING_PERIODS -
+* DATABASE_URL (TokenInfoUpdater)
+* DATABASE_NAME (TokenInfoUpdater)
+* COLLECTION_NAME (TokenInfoUpdater)
+* INFLATION_SCHEDULE_OBJECT_ID (ME)
+* INFLATINO_SCHEDULE_COLLECTION_NAME (me)
+* TOKEN_SYMBOL (TokenInfoUpdater)
+* ACCOUNT_MNEMONIC (TokenInfoUpdater)
+* NODE_ENDPOINT (TokenInfoUpdater)
+* NODE_ENDPOINT_PORT (TokenInfoUpdater)
+* CHAIN_ID (TokenInfoUpdater)
+* STAKING_ADDRESS (TokenInfoUpdater)
+* PLATFORM_ADDRESS (TokenInfoUpdater)
+* SECONDS_PER_BLOCK (TokenInfoUpdater)
+* NUM_OF_COMPOUNDING_PERIODS (TokenInfoUpdater)

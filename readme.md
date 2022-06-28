@@ -20,21 +20,23 @@ Updates these token's params into MongoDB every 10 minutes:
 
 ### InflationScheduleFetch
 
-Fetches the inflation schedule from the LGND staking contract
-TODO: Implement
+Fetches the inflation schedule from the LGND staking contract.
+Runs once every two months.
 
 ## Env vars required
 
-* DATABASE_URL (TokenInfoUpdater)
-* DATABASE_NAME (TokenInfoUpdater)
-* COLLECTION_NAME (TokenInfoUpdater)
+* MONGODB_URL (all)
+* MONGODB_NAME (all)
+* INFLATINO_SCHEDULE_COLLECTION_NAME (InflationScheduleFetch)
+* INFLATION_SCHEDULE_OBJECT_ID (InflationScheduleFetch)
+* TOKEN_INFO_COLLECTION_NAME (TokenInfoUpdater)
 * TOKEN_INFO_OBJECT_ID (TokenInfoUpdater)
 * TOKEN_SYMBOL (TokenInfoUpdater)
-* QUERYING_ACCOUNT_MNEMONIC (TokenInfoUpdater)
-* NODE_ENDPOINT (TokenInfoUpdater)
-* NODE_ENDPOINT_PORT (TokenInfoUpdater)
-* CHAIN_ID (TokenInfoUpdater)
-* STAKING_ADDRESS (TokenInfoUpdater)
+* ACCOUNT_MNEMONIC (all)
+* NODE_ENDPOINT (all)
+* NODE_ENDPOINT_PORT (all)
+* CHAIN_ID (all)
+* STAKING_ADDRESS (all)
 * PLATFORM_ADDRESS (TokenInfoUpdater)
 * SECONDS_PER_BLOCK (TokenInfoUpdater)
 * NUM_OF_COMPOUNDING_PERIODS (TokenInfoUpdater)

@@ -1,0 +1,12 @@
+{
+  "scriptFile": "../dist/InflationScheduleFetch/index.js",
+  "bindings": [
+    {
+      "authLevel": "function",
+      "type": "timerTrigger",
+      "direction": "in",
+      "name": "InflationScheduleFetch",
+      "schedule": "0 0 0 1 */2 *"
+    }
+  ]
+}

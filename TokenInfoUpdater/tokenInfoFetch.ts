@@ -1,13 +1,10 @@
-import {getClient, queryNoParams} from "./chainUtils";
+import { queryNoParams } from "../shared/chainUtils";
 import axios from "axios"
 import { SecretNetworkClient } from "secretjs";
 import { Context } from "@azure/functions"
+import { secretNetworkClient } from "../shared/secretjsClient";
+import { IInflationSchedule } from "../shared/schemas";
 
-
-interface IOsmosisData {
-    priceUsd: number,
-    dailyVolume: number,
-}
 
 export interface ITokenInfo {
   apr: number,
@@ -15,6 +12,11 @@ export interface ITokenInfo {
   liquidity: number,
   priceUsd: number,
   totalLocked: number,
+  dailyVolume: number,
+}
+
+interface IOsmosisData {
+  priceUsd: number,
   dailyVolume: number,
 }
 
@@ -38,33 +40,21 @@ const getOsmosisDailyData = async (context: Context) => {
   }
 };
 
-const getInflationScheduleByBlockHeight = (inflationSchedule: string | any[], blockHeight: number) => {
-  let i: number;
-  for (i = 0; i < inflationSchedule.length; i++) {
-    if (inflationSchedule[i].end_block > blockHeight) break;
+async function getInflationScheduleFromDb(
+  secretNetworkClient: SecretNetworkClient, 
+  context: Context
+): Promise<IInflationSchedule> {
+  // Elad!! (And check the types probaly not IInflationSchedule {number, number})
+  const currInflationSchedule: IInflationSchedule = {
+    reward_per_block: 1,
+    end_block: 10_000
   }
-  return inflationSchedule[i];
-};
+  return currInflationSchedule;
+}
 
-async function getRewarPerYear(secretNetwork: SecretNetworkClient, context: Context) {
-  // TODO: Check that the null input is correct
-  const latestBlock = await secretNetwork.query.tendermint.getLatestBlock(null);
-  const latestBlockHeight = latestBlock.block.header.height;
-
-  // TODO: get from the DB (Will be updated by InflationScheduleFetch); hardcode for now
-  // query inflation_schedule from the staking contract:
-  const inflationSchedule: any = await queryNoParams(
-    secretNetwork,
-    process.env["STAKING_ADDRESS"],
-    "inflation_schedule",
-    context
-  ); 
-
-  const currInflationSchedule = getInflationScheduleByBlockHeight(
-    inflationSchedule.inflation_schedule.inflation_schedule,
-    parseInt(latestBlockHeight)
-  );
-  const rewardPerBlock = parseInt(currInflationSchedule.reward_per_block);
+async function getRewarPerYear(secretNetworkClient: SecretNetworkClient, context: Context) {
+  const currInflationSchedule: IInflationSchedule = await getInflationScheduleFromDb(secretNetworkClient, context);
+  const rewardPerBlock = currInflationSchedule.reward_per_block;
   const endBlock = currInflationSchedule.end_block;
 
   const secondsPerBlock = parseInt(process.env["SECONDS_PER_BLOCK"]); //TODO: fetch from MongoDB
@@ -83,18 +73,11 @@ export const getUpdatedTokenInfoValues = async (context: Context): Promise<IToke
     throw "Fetching the data from osmosis failed; MongoDB should not get updated";
   }
 
-  const secretNetwork = await getClient(
-    process.env["QUERYING_ACCOUNT_MNEMONIC"],
-    process.env["NODE_ENDPOINT"],
-    process.env["NODE_ENDPOINT_PORT"],
-    process.env["CHAIN_ID"]
-    );
-
   // query the blockchain to get current block height:
-  const rewardPerYear = await getRewarPerYear(secretNetwork, context);
+  const rewardPerYear = await getRewarPerYear(secretNetworkClient, context);
 
   const totalLockedResponse: any = await queryNoParams(
-    secretNetwork,
+    secretNetworkClient,
     process.env["STAKING_ADDRESS"],
     "total_locked",
     context
@@ -108,7 +91,7 @@ export const getUpdatedTokenInfoValues = async (context: Context): Promise<IToke
   const apy = Math.pow(1 + apr / n, n) - 1;
 
   const totalBalances: any = await queryNoParams(
-    secretNetwork,
+    secretNetworkClient,
     process.env["PLATFORM_ADDRESS"],
     "total_balances",
     context

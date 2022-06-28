@@ -1,8 +1,9 @@
 import { AzureFunction, Context } from "@azure/functions"
 import { ObjectId } from "mongodb";
 
-import {getUpdatedTokenInfoValues, ITokenInfo} from "../shared/tokenInfoFetch";
+import {getUpdatedTokenInfoValues, ITokenInfo} from "./tokenInfoFetch";
 import {dbInstance, getDbInstance} from "../shared/db";
+import { getClient, secretNetworkClient } from "../shared/secretjsClient";
 
 
 const timerTrigger: AzureFunction = async function (context: Context, myTimer: any): Promise<void> {
@@ -10,12 +11,16 @@ const timerTrigger: AzureFunction = async function (context: Context, myTimer: a
     
     if (myTimer.isPastDue)
     {
-        context.log('Timer function is running late!');
+        context.log('Timer function TokenInfoUpdater is running late!');
     }
-    context.log('Timer trigger function ran! Start!', timeStamp);
+    context.log('Timer triggered TokenInfoUpdater: Start!', timeStamp);
 
     if (!dbInstance) {
       await getDbInstance();
+    }
+
+    if (!secretNetworkClient) {
+      await getClient();
     }
 
     const updatedValuesObj: ITokenInfo = await getUpdatedTokenInfoValues(context);
@@ -32,7 +37,7 @@ const timerTrigger: AzureFunction = async function (context: Context, myTimer: a
 
     const newvalues = { $set: updatedValuesObj };
     dbInstance
-      .collection(process.env["MONGODB_COLLECTION_NAME"])
+      .collection(process.env["TOKEN_INFO_COLLECTION_NAME"])
       .updateOne(queryBy, newvalues, function (err, res) {
         if (err) throw err;
         context.log(
