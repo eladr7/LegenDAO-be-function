@@ -18,7 +18,7 @@ export async function getInflationScheduleFromChain(
   context: Context
 ): Promise<IInflationSchedule> {
   const latestBlock = await secretNetworkClient.query.tendermint.getLatestBlock();
-  context.log("latestBlock: ", latestBlock);
+  // context.log("latestBlock: ", latestBlock);
 
   const latestBlockHeight = latestBlock.block.header.height;
 

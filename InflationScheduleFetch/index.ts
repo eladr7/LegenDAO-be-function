@@ -11,11 +11,11 @@ import { getInflationScheduleFromChain } from "./inflationScheduleHelper";
 const timerTrigger: AzureFunction = async function (context: Context, myTimer: any): Promise<void> {
     var timeStamp = new Date().toISOString();
     
-    if (myTimer.isPastDue)
-    {
-        context.log('Timer function InflationScheduleFetch is running late!');
-    }
-    context.log('Timer triggered InflationScheduleFetch: Start!', timeStamp);
+    // if (myTimer.isPastDue)
+    // {
+    //     context.log('Timer function InflationScheduleFetch is running late!');
+    // }
+    // context.log('Timer triggered InflationScheduleFetch: Start!', timeStamp);
 
     if (!dbInstance) {
       await getDbInstance();
@@ -43,10 +43,10 @@ const timerTrigger: AzureFunction = async function (context: Context, myTimer: a
       .collection(INFLATINO_SCHEDULE_COLLECTION_NAME)
       .updateOne(queryBy, newvalues, function (err, res) {
         if (err) throw err;
-        context.log(
-          "Updated the inflation schedule: ",
-          currInflationSchedule
-        );
+        // context.log(
+        //   "Updated the inflation schedule: ",
+        //   currInflationSchedule
+        // );
       });
 };
 

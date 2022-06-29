@@ -10,11 +10,11 @@ import { TOKEN_INFO_COLLECTION_NAME, TOKEN_INFO_OBJECT_ID } from "./envVars";
 const timerTrigger: AzureFunction = async function (context: Context, myTimer: any): Promise<void> {
     var timeStamp = new Date().toISOString();
     
-    if (myTimer.isPastDue)
-    {
-        context.log('Timer function TokenInfoUpdater is running late!');
-    }
-    context.log('Timer triggered TokenInfoUpdater: Start!', timeStamp);
+    // if (myTimer.isPastDue)
+    // {
+    //     context.log('Timer function TokenInfoUpdater is running late!');
+    // }
+    // context.log('Timer triggered TokenInfoUpdater: Start!', timeStamp);
 
     if (!dbInstance) {
       await getDbInstance();
@@ -41,10 +41,10 @@ const timerTrigger: AzureFunction = async function (context: Context, myTimer: a
       .collection(TOKEN_INFO_COLLECTION_NAME)
       .updateOne(queryBy, newvalues, function (err, res) {
         if (err) throw err;
-        context.log(
-          "Updated the token info with these values: ",
-          updatedValuesObj
-        );
+        // context.log(
+        //   "Updated the token info with these values: ",
+        //   updatedValuesObj
+        // );
       });
 };
 
